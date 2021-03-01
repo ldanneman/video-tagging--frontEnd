@@ -1,0 +1,42 @@
+.playerDivWrapper {
+  text-align: center;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.ratingTitleWrapper {
+  margin: 16px auto;
+  width: 100%;
+}
+
+.rattingSubtitle {
+  overflow-wrap: break-word;
+  width: 100%;
+}
+
+.playerWrapper {
+  position: relative;
+  padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
+}
+
+.reactPlayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.videoTag {
+  width: 100%;
+  height: 100%;
+}
+
+.indexAndSpeedWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-top: 10%;
+}
