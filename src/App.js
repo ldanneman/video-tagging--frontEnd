@@ -4,15 +4,17 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { VideoProvider } from "./library/Context.js";
 import ReviewPage from "./pages/ReviewPage";
 import HomePage from "./pages/HomePage";
+import axios from "axios";
 
 const videos = [
   {
-    path: "https://www.facebook.com/sann.jones.galbraith/videos/10158700587661827/",
+    path:
+      "https://www.facebook.com/sann.jones.galbraith/videos/10158700587661827/",
     id: 1,
     isAggressive: false,
   },
@@ -54,11 +56,27 @@ const videos = [
 ];
 
 function App() {
-  const [currentVideo, setCurrentVideo] = useState(videos[0]);
-  const [videoList, setVideoList] = useState(videos);
+  const [videoList, setVideoList] = useState([]);
   const [IsLoading, setLoading] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState(videos[0]);
 
-  return (
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/api/videos`)
+      .then(function (response) {
+        console.log("response", response);
+        console.log("data", response.data);
+        let videos2 = response.data.map((item, index) => {
+          return { path: item, id: index, isAggressive: true };
+        });
+        setVideoList(videos2);
+        // setCurrentVideo(videoList[0]);
+      })
+      .catch(function (error) {});
+  }, []);
+
+  console.log("uuu", videoList);
+  return currentVideo ? (
     <VideoProvider
       value={{
         currentVideo,
@@ -79,6 +97,8 @@ function App() {
         </Router>
       </div>
     </VideoProvider>
+  ) : (
+    <div>Loading</div>
   );
 }
 

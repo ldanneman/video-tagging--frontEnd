@@ -38,7 +38,7 @@ const VideoPlayer = () => {
 
   useEffect(() => {
     setPlayerState({ ...playerState, url: currentVideo.path });
-  }, [currentVideo]);
+  }, [currentVideo ]);
 
   const getCurrentVideoIndex = () => {
     const wholeVideo = videoList.length;
@@ -130,7 +130,9 @@ const VideoPlayer = () => {
     <div className={styles.playerDivWrapper}>
       <div className={styles.ratingTitleWrapper}>
         <Title>Review Video</Title>
-        <Title className={styles.rattingSubtitle} level={5}>{currentVideo.path}</Title>
+        <Title className={styles.rattingSubtitle} level={5}>
+          {currentVideo.path}
+        </Title>
       </div>
       {IsLoading && <Loader />}
       <div className={styles.contents}>
