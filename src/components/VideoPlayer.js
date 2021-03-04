@@ -38,7 +38,7 @@ const VideoPlayer = () => {
 
   useEffect(() => {
     setPlayerState({ ...playerState, url: currentVideo.path });
-  }, [currentVideo ]);
+  }, [currentVideo, playerState]);
 
   const getCurrentVideoIndex = () => {
     const wholeVideo = videoList.length;

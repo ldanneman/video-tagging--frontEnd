@@ -4,7 +4,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 
 import { VideoProvider } from "./library/Context.js";
 import ReviewPage from "./pages/ReviewPage";
@@ -13,9 +13,8 @@ import axios from "axios";
 
 const videos = [
   {
-    path:
-      "https://www.facebook.com/sann.jones.galbraith/videos/10158700587661827/",
-    id: 1,
+    path: "https://www.youtube.com/watch?v=Pahk53QBw_k&ab_channel=MG1010",
+    id: 9000,
     isAggressive: false,
   },
   {
@@ -56,7 +55,7 @@ const videos = [
 ];
 
 function App() {
-  const [videoList, setVideoList] = useState([]);
+  const [videoList, setVideoList] = useState(null);
   const [IsLoading, setLoading] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(videos[0]);
 
@@ -69,14 +68,14 @@ function App() {
         let videos2 = response.data.map((item, index) => {
           return { path: item, id: index, isAggressive: true };
         });
+        console.log("ggg", videos2[0].path);
         setVideoList(videos2);
-        // setCurrentVideo(videoList[0]);
       })
       .catch(function (error) {});
   }, []);
 
   console.log("uuu", videoList);
-  return currentVideo ? (
+  return videoList ? (
     <VideoProvider
       value={{
         currentVideo,
@@ -87,6 +86,7 @@ function App() {
         setLoading,
       }}
     >
+      {console.log("www", videoList[0])}
       <div className="app">
         <Router>
           <Switch>
