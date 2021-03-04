@@ -60,7 +60,7 @@ const videos = [
 function App() {
   const [videoList, setVideoList] = useState(null);
   const [IsLoading, setLoading] = useState(false);
-  const [currentVideo, setCurrentVideo] = useState(videos[0]);
+  const [currentVideo, setCurrentVideo] = useState(null);
 
   useEffect(() => {
     axios
@@ -73,12 +73,13 @@ function App() {
         });
         console.log("ggg", videos2[0].path);
         setVideoList(videos2);
+        setCurrentVideo(videos2[0]);
       })
       .catch(function (error) {});
   }, []);
 
   console.log("uuu", videoList);
-  return videoList ? (
+  return videoList && currentVideo ? (
     <VideoProvider
       value={{
         currentVideo,
