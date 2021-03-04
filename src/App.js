@@ -10,10 +10,13 @@ import { VideoProvider } from "./library/Context.js";
 import ReviewPage from "./pages/ReviewPage";
 import HomePage from "./pages/HomePage";
 import axios from "axios";
+import { BACK_PORT } from "./var";
+
+const LOCAL_PORT = `http://localhost:5000/api`;
 
 const videos = [
   {
-    path: "https://www.youtube.com/watch?v=Pahk53QBw_k&ab_channel=MG1010",
+    path: "https://www.youtube.com/watch?v=jhFDyDgMVUI",
     id: 9000,
     isAggressive: false,
   },
@@ -61,7 +64,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/videos`)
+      .get(`${BACK_PORT}/videos` || `${LOCAL_PORT}/videos`)
       .then(function (response) {
         console.log("response", response);
         console.log("data", response.data);

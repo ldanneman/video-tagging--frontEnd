@@ -138,8 +138,8 @@ const VideoPlayer = () => {
       <div className={styles.contents}>
         <div className={styles.playerWrapper}>
           <ReactPlayer
-            width="100%"
-            height="100%"
+            width="60%"
+            height="60%"
             ref={player}
             playing={playerState.playing}
             className={styles.reactPlayer}
