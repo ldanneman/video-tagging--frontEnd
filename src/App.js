@@ -11,6 +11,7 @@ import ReviewPage from "./pages/ReviewPage";
 import HomePage from "./pages/HomePage";
 import axios from "axios";
 import { BACK_PORT } from "./var";
+import Loader from "./components/Loader";
 
 const LOCAL_PORT = `http://localhost:5000/api`;
 
@@ -102,7 +103,7 @@ function App() {
       </div>
     </VideoProvider>
   ) : (
-    <div>Loading</div>
+    <Loader />
   );
 }
 
