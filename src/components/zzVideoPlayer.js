@@ -3,7 +3,7 @@ import { Table, Select, Typography } from "antd";
 import ReactPlayer from "react-player";
 import styles from "../styles/VideoPlayer.module.css";
 import { VideoContext } from "../library/Context";
-import InteractionBtns from "./InteractionBtns";
+import InteractionBtns from "./zzInteractionBtns";
 import RatingBtns from "./RatingBtns";
 import Loader from "./Loader";
 
@@ -162,7 +162,7 @@ const VideoPlayer = () => {
           />
         </div>
 
-        <input
+        {/* <input
           type="range"
           min={0}
           max={0.999999}
@@ -174,9 +174,9 @@ const VideoPlayer = () => {
           onTouchStart={handleSeekMouseDown}
           onTouchMove={handleSeekChange}
           onTouchEnd={handleSeekMouseUp}
-        />
+        /> */}
 
-        <Table dataSource={dataSource} columns={columns} pagination={false} />
+        {/* <Table dataSource={dataSource} columns={columns} pagination={false} /> */}
 
         <div className={styles.indexAndSpeedWrapper}>
           <div>{getCurrentVideoIndex()}</div>

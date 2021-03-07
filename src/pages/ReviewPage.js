@@ -1,8 +1,6 @@
 import React from "react";
 import VideoPlayer from "../components/VideoPlayer";
 
-
-
 const ReviewPage = () => {
   return (
     <div>

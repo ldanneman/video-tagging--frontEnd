@@ -2,36 +2,32 @@
 // API details can be found here https://ant.design/components/button/#API
 
 import React from "react";
-import Btn from "./Btn";
-import styles from "../styles/ratingBtns.module.css"
+import { Button } from "antd";
+import styles from "../styles/ratingBtns.module.css";
 
-const RatingBtns = () => {
-  const onAggressiveBtnClick = (e) => {
-    console.log(e.target.innerText);
+const RatingBtns = ({ setVideoList, videoList, currentVideo }) => {
+  const aggressive = () => {
+    setVideoList(
+      ...videoList,
+      (videoList[videoList.indexOf(currentVideo)].isAggressiveInternal = true)
+    );
   };
 
-  const onNoAggressiveBtnClick = (e) => {
-    console.log(e.target.innerText);
+  const notAggressive = () => {
+    setVideoList(
+      ...videoList,
+      (videoList[videoList.indexOf(currentVideo)].isAggressiveInternal = false)
+    );
   };
+
   return (
     <div className={styles.ratingBtnsWrapper}>
- 
-          <Btn
-            type="primary"
-            danger={true}
-            shape="round"
-            onClick={onAggressiveBtnClick}
-            text={"😠 Aggressive 😠"}
-          />
-      
-          <Btn
-            type="primary"
-            danger={false}
-            shape="round"
-            onClick={onNoAggressiveBtnClick}
-            text={"😊 Not Aggressive 😊"}
-          />
-    
+      <Button type="primary" shape="round" onClick={notAggressive}>
+        Not Aggressive
+      </Button>
+      <Button type="primary" danger={true} shape="round" onClick={aggressive}>
+        Aggressive
+      </Button>
     </div>
   );
 };
