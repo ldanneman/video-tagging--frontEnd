@@ -1,5 +1,5 @@
 .playerDivWrapper {
-  border: 5px solid green;
+  /* border: 5px solid green; */
   min-height: 100vh;
   text-align: center;
   /* text-align: center;
@@ -22,7 +22,7 @@
 }
 
 .playerWrapper {
-  margin-top: 1rem;
+  /* margin-top: 0.5rem; */
   border: 2px solid yellow;
   display: inline-block;
   padding: 2rem;
