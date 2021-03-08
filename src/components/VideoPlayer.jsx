@@ -43,6 +43,7 @@ function VideoPlayer() {
     <div className={styles.playerDivWrapper}>
       <div className={styles.playerWrapper}>
         <ReactPlayer
+          className={styles.reactPlayer}
           url={playerState.url}
           controls={playerState.controls}
           playing={playerState.playing}

@@ -48,9 +48,9 @@ function InteractionButtons({ player, playerState, setPlayerState }) {
               onClick={prevVideo}
             />
           </Button>
-          <Button>
+          {/* <Button>
             <FontAwesomeIcon icon={["fas", "backward"]} size="1x" />
-          </Button>
+          </Button> */}
           {playerState.playing ? (
             <Button>
               <FontAwesomeIcon
@@ -75,9 +75,9 @@ function InteractionButtons({ player, playerState, setPlayerState }) {
               onClick={replay}
             />
           </Button>
-          <Button>
+          {/* <Button>
             <FontAwesomeIcon icon={["fas", "forward"]} size="1x" />{" "}
-          </Button>
+          </Button> */}
           <Button>
             <FontAwesomeIcon
               icon={["fas", "fast-forward"]}
