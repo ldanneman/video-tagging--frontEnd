@@ -23,7 +23,8 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(`${BACK_PORT}/videos` || `${LOCAL_PORT}/videos`)
+      .get(`${LOCAL_PORT}/videos`)
+      // .get(`${BACK_PORT}/videos` || `${LOCAL_PORT}/videos`)
       .then(function (response) {
         let videos2 = response.data.map((item, index) => {
           return {
@@ -36,7 +37,9 @@ function App() {
         setVideoList(videos2);
         setCurrentVideo(videos2[0]);
       })
-      .catch(function (error) {});
+      .catch(function (error) {
+        alert(error);
+      });
   }, []);
 
   console.log("uuu", videoList);

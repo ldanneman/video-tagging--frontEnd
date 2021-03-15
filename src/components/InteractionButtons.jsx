@@ -41,7 +41,7 @@ function InteractionButtons({ player, playerState, setPlayerState }) {
     playerState && (
       <div>
         <div className={styles.btnsWarpper}>
-          <Button>
+          <Button className={styles.button}>
             <FontAwesomeIcon
               icon={["fas", "fast-backward"]}
               size="1x"
@@ -52,7 +52,7 @@ function InteractionButtons({ player, playerState, setPlayerState }) {
             <FontAwesomeIcon icon={["fas", "backward"]} size="1x" />
           </Button> */}
           {playerState.playing ? (
-            <Button>
+            <Button className={styles.button}>
               <FontAwesomeIcon
                 icon={["far", "pause-circle"]}
                 size="1x"
@@ -60,7 +60,7 @@ function InteractionButtons({ player, playerState, setPlayerState }) {
               />
             </Button>
           ) : (
-            <Button>
+            <Button className={styles.button}>
               <FontAwesomeIcon
                 icon={["far", "play-circle"]}
                 size="1x"
@@ -68,7 +68,7 @@ function InteractionButtons({ player, playerState, setPlayerState }) {
               />
             </Button>
           )}
-          <Button>
+          <Button className={styles.button}>
             <FontAwesomeIcon
               icon={["fas", "redo"]}
               size="1x"
@@ -78,7 +78,7 @@ function InteractionButtons({ player, playerState, setPlayerState }) {
           {/* <Button>
             <FontAwesomeIcon icon={["fas", "forward"]} size="1x" />{" "}
           </Button> */}
-          <Button>
+          <Button className={styles.button}>
             <FontAwesomeIcon
               icon={["fas", "fast-forward"]}
               size="1x"

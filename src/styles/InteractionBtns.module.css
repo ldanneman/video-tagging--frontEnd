@@ -6,6 +6,10 @@
   font-size: 1.25rem;
 }
 
+.button {
+  background-color: #722ed1;
+}
+
 input[type="range"] {
   width: 90%;
   margin: 1rem 0;

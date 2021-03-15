@@ -42,6 +42,15 @@
   left: 0; */
 }
 
+.reactPlayer > video {
+  border: 10px solid white;
+  border-radius: 1rem;
+  /* border-style: ridge; */
+}
+
+video:focus {
+  outline: 0;
+}
 .videoTag {
   width: 100%;
   height: 100%;
