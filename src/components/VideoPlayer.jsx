@@ -45,6 +45,7 @@ function VideoPlayer() {
   }, [currentVideo]);
 
   console.log("rrr", playerState);
+  console.log("sss", currentVideo);
 
   const post = () => {
     console.log("9999", playerState.url);
@@ -56,7 +57,11 @@ function VideoPlayer() {
       });
   };
 
-  const thevideo = "http://localhost:5000/api/videos/stream";
+  const thevideo = `http://localhost:5000/api/videos/stream?path=Assets/Videos/FV/${playerState.url
+    .split("com/")[1]
+    .split("mp4")[0]
+    .replaceAll("/", "-")}mp4`;
+  console.log("thevideo", thevideo);
   return (
     <div className={styles.playerDivWrapper}>
       <div className={styles.playerWrapper}>
