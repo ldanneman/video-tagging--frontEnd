@@ -6,7 +6,11 @@ import styles from "../styles/VideoPlayer.module.css";
 import RatingBtns from "./RatingBtns.js";
 import axios from "axios";
 import { BACK_PORT } from "../var";
+import { Button } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
+import download from "../assets/video/loading-overlay.mp4";
+import eyeknow from "../assets/Images/static1.squarespace.png";
 
 const LOCAL_PORT = `http://localhost:5000/api`;
 
@@ -21,7 +25,9 @@ function VideoPlayer() {
   } = useContext(VideoContext);
 
   const [playerState, setPlayerState] = useState({
+    // url: currentVideo.path,
     url: currentVideo.path,
+    urlUnloaded: "nothing.mp4",
     pip: false,
     playing: true,
     controls: true,
@@ -34,7 +40,13 @@ function VideoPlayer() {
     autoPlay: true,
     seeking: false,
     downloaded: null,
+    poster: eyeknow,
   });
+  const lastMp4 = new RegExp(/mp4(?!.*mp4)/);
+  const thevideo = `http://localhost:5000/api/videos/stream?path=Assets/Videos/FV/${playerState.url
+    .split("com/")[1]
+    .split(lastMp4)[0]
+    .replaceAll("/", "-")}mp4`;
 
   const getCurrentVideoIndex = () => {
     const wholeVideo = videoList.length;
@@ -49,39 +61,60 @@ function VideoPlayer() {
   console.log("sss", currentVideo);
 
   const post = () => {
+    setLoading(true);
+    setPlayerState({ ...playerState, urlUnloaded: download });
     console.log("9999", playerState.url);
     axios
       .post(`${LOCAL_PORT}/videos/download`, videoList)
       .then(function (response) {
-        response.data
-          ? setPlayerState({ ...playerState, downloaded: true })
-          : console.log("waiting...");
+        if (response.data) {
+          setPlayerState({ ...playerState, downloaded: true });
+          setLoading(false);
+        } else {
+          console.log("waiting...");
+        }
         console.log(response.data);
+        // response.data
+        //   ? setPlayerState({ ...playerState, downloaded: true })
+        //   : console.log("waiting...");
+        // console.log(response.data);
       })
       .catch(function (error) {
         Swal.fire("Oops...", error?.response?.data, "error");
       });
   };
 
-  const thevideo = `http://localhost:5000/api/videos/stream?path=Assets/Videos/FV/${playerState.url
-    .split("com/")[1]
-    .split("mp4")[0]
-    .replaceAll("/", "-")}mp4`;
-  const filler =
-    "https://www.youtube.com/watch?v=PCIvOGveIK0&ab_channel=SeanOzz";
-  console.log("thevideo", thevideo);
+  // const filler = "https://www.youtube.com/watch?v=RF-i1HwZlzE";
+  const filler = "assets/video/loading-overlay.mp4";
+  // console.log("thevideo", thevideo);
   return (
     <div className={styles.playerDivWrapper}>
       <div className={styles.playerWrapper}>
-        <button onClick={post}>Download Videos</button>
+        <Button
+          className={styles.downloadButton}
+          icon={<DownloadOutlined />}
+          onClick={post}
+          loading={IsLoading}
+        >
+          Download Videos
+        </Button>
         <ReactPlayer
           className={styles.reactPlayer}
           // url={playerState.url}
-          url={playerState.downloaded ? thevideo : filler}
-          controls={playerState.controls}
+          url={playerState.downloaded ? thevideo : playerState.urlUnloaded}
+          // url={playerState.url}
+          controls={playerState.downloaded ? true : false}
           playing={playerState.playing}
           muted={playerState.muted}
           autoPlay={playerState.autoPlay}
+          loop={playerState.downloaded ? false : true}
+          config={{
+            file: {
+              attributes: {
+                poster: playerState.poster,
+              },
+            },
+          }}
         />
         <div>{getCurrentVideoIndex()}</div>
 

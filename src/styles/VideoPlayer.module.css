@@ -45,6 +45,7 @@
 .reactPlayer > video {
   border: 10px solid white;
   border-radius: 1rem;
+  background-color: black;
   /* border-style: ridge; */
 }
 
@@ -62,4 +63,9 @@ video:focus {
   justify-content: center;
   font-weight: bold;
   margin-top: 10%;
+}
+
+.downloadButton {
+  margin-bottom: 5px;
+  background-color: lightgreen;
 }
