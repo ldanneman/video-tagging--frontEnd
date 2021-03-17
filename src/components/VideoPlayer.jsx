@@ -33,6 +33,7 @@ function VideoPlayer() {
     loop: false,
     autoPlay: true,
     seeking: false,
+    downloaded: null,
   });
 
   const getCurrentVideoIndex = () => {
@@ -50,8 +51,13 @@ function VideoPlayer() {
   const post = () => {
     console.log("9999", playerState.url);
     axios
-      .post(`${LOCAL_PORT}/videos/download`, playerState)
-      .then(function (response) {})
+      .post(`${LOCAL_PORT}/videos/download`, videoList)
+      .then(function (response) {
+        response.data
+          ? setPlayerState({ ...playerState, downloaded: true })
+          : console.log("waiting...");
+        console.log(response.data);
+      })
       .catch(function (error) {
         Swal.fire("Oops...", error?.response?.data, "error");
       });
@@ -61,14 +67,17 @@ function VideoPlayer() {
     .split("com/")[1]
     .split("mp4")[0]
     .replaceAll("/", "-")}mp4`;
+  const filler =
+    "https://www.youtube.com/watch?v=PCIvOGveIK0&ab_channel=SeanOzz";
   console.log("thevideo", thevideo);
   return (
     <div className={styles.playerDivWrapper}>
       <div className={styles.playerWrapper}>
+        <button onClick={post}>Download Videos</button>
         <ReactPlayer
           className={styles.reactPlayer}
           // url={playerState.url}
-          url={thevideo}
+          url={playerState.downloaded ? thevideo : filler}
           controls={playerState.controls}
           playing={playerState.playing}
           muted={playerState.muted}
@@ -90,7 +99,6 @@ function VideoPlayer() {
           setVideoList={setVideoList}
         />
       </div>
-      <button onClick={post}>POST</button>
     </div>
   );
 }
