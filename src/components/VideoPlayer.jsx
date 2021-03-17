@@ -43,14 +43,14 @@ function VideoPlayer() {
     poster: eyeknow,
   });
   const lastMp4 = new RegExp(/mp4(?!.*mp4)/);
-  const thevideo = `http://localhost:5000/api/videos/stream?path=Assets/Videos/FV/${playerState.url
+  const thevideo = `${BACK_PORT}/videos/stream?path=Assets/Videos/FV/${playerState.url
     .split("com/")[1]
     .split(lastMp4)[0]
     .replaceAll("/", "-")}mp4`;
 
   const getCurrentVideoIndex = () => {
     const wholeVideo = videoList.length;
-    return `${currentVideo.id}/${wholeVideo} has been reviewed`;
+    return `${currentVideo.id + 1}/${wholeVideo} have been reviewed`;
   };
 
   useEffect(() => {
@@ -65,7 +65,7 @@ function VideoPlayer() {
     setPlayerState({ ...playerState, urlUnloaded: download });
     console.log("9999", playerState.url);
     axios
-      .post(`${LOCAL_PORT}/videos/download`, videoList)
+      .post(`${BACK_PORT}/videos/download`, videoList)
       .then(function (response) {
         if (response.data) {
           setPlayerState({ ...playerState, downloaded: true });
@@ -84,6 +84,17 @@ function VideoPlayer() {
       });
   };
 
+  const onDelete = () => {
+    axios
+      .post(`${BACK_PORT}/videos/deletefv`, videoList)
+      .then(function (response) {
+        Swal.fire(response?.data);
+      })
+      .catch(function (error) {
+        Swal.fire("Oops...", error?.response?.data, "error");
+      });
+  };
+
   // const filler = "https://www.youtube.com/watch?v=RF-i1HwZlzE";
   const filler = "assets/video/loading-overlay.mp4";
   // console.log("thevideo", thevideo);
@@ -96,8 +107,9 @@ function VideoPlayer() {
           onClick={post}
           loading={IsLoading}
         >
-          Download Videos
+          Download/Play Videos
         </Button>
+        <Button onClick={onDelete}>Delete Videos</Button>
         <ReactPlayer
           className={styles.reactPlayer}
           // url={playerState.url}

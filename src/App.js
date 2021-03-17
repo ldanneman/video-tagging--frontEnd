@@ -23,7 +23,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(`${LOCAL_PORT}/videos`)
+      .get(`${BACK_PORT}/videos`)
       // .get(`${BACK_PORT}/videos` || `${LOCAL_PORT}/videos`)
       .then(function (response) {
         let videos2 = response.data.map((item, index) => {
