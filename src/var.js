@@ -1,3 +1,3 @@
-const BACK_PORT = "https://eyeknow-backend.herokuapp.com/api";
+const BACK_PORT = "https://cors-anywhere.eyeknow-backend.herokuapp.com/api";
 
 export { BACK_PORT };
