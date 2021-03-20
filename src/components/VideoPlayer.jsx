@@ -65,9 +65,13 @@ function VideoPlayer() {
     setPlayerState({ ...playerState, urlUnloaded: download });
     console.log("9999", playerState.url);
     axios
-      .post(`${BACK_PORT}/videos/download`, videoList, {
-        headers: { "Access-Control-Allow-Origin": "*" },
-      })
+      .post(
+        `${BACK_PORT}/videos/download`,
+        videoList
+        // , {
+        // headers: { "Access-Control-Allow-Origin": "*" },
+        // }
+      )
       .then(function (response) {
         if (response.data) {
           setPlayerState({ ...playerState, downloaded: true });
