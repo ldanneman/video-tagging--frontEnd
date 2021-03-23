@@ -22,28 +22,31 @@ function VideoPlayer() {
     videoList,
     IsLoading,
     setLoading,
+    playerState,
+    setPlayerState,
   } = useContext(VideoContext);
 
-  const [playerState, setPlayerState] = useState({
-    // url: currentVideo.path,
-    url: currentVideo.path,
-    urlUnloaded: "nothing.mp4",
-    pip: false,
-    playing: true,
-    controls: true,
-    light: false,
-    muted: true,
-    played: 0,
-    loaded: 0,
-    duration: 0,
-    loop: false,
-    autoPlay: true,
-    seeking: false,
-    downloaded: null,
-    poster: eyeknow,
-  });
+  // const [playerState, setPlayerState] = useState({
+  //   // url: currentVideo.path,
+  //   url: currentVideo.path,
+  //   urlUnloaded: "nothing.mp4",
+  //   pip: false,
+  //   playing: true,
+  //   controls: true,
+  //   light: false,
+  //   muted: true,
+  //   played: 0,
+  //   loaded: 0,
+  //   duration: 0,
+  //   loop: false,
+  //   autoPlay: true,
+  //   seeking: false,
+  //   downloaded: null,
+  //   poster: eyeknow,
+  // });
   const lastMp4 = new RegExp(/mp4(?!.*mp4)/);
-  const thevideo = `${BACK_PORT}/videos/stream?path=Assets/Videos/FV/${playerState.url
+  let encoded = encodeURI(currentVideo.path);
+  const thevideo = `${BACK_PORT}/videos/stream?path=Assets/Videos/FV/${encoded
     .split("com/")[1]
     .split(lastMp4)[0]
     .replaceAll("/", "-")}mp4`;
@@ -54,8 +57,8 @@ function VideoPlayer() {
   };
 
   useEffect(() => {
-    setPlayerState({ ...playerState, url: currentVideo.path });
-  }, [currentVideo]);
+    // setPlayerState({ ...playerState, url: currentVideo.path });
+  }, [currentVideo, playerState]);
 
   console.log("rrr", playerState);
   console.log("sss", currentVideo);
@@ -143,6 +146,8 @@ function VideoPlayer() {
           setCurrentVideo={setCurrentVideo}
           setVideoList={setVideoList}
           setPlayerState={setPlayerState}
+          setLoading={setLoading}
+          IsLoading={IsLoading}
         />
         <RatingBtns
           videoList={videoList}

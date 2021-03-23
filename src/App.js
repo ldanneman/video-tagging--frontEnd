@@ -13,6 +13,7 @@ import Test from "./pages/Test";
 import axios from "axios";
 import { BACK_PORT } from "./var";
 import Loader from "./components/Loader";
+import eyeknow from "./assets/Images/static1.squarespace.png";
 
 const LOCAL_PORT = `http://localhost:5000/api`;
 
@@ -20,6 +21,25 @@ function App() {
   const [videoList, setVideoList] = useState(null);
   const [IsLoading, setLoading] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(null);
+
+  const [playerState, setPlayerState] = useState({
+    // url: currentVideo.path,
+    url: currentVideo?.path,
+    urlUnloaded: "nothing.mp4",
+    pip: false,
+    playing: true,
+    controls: true,
+    light: false,
+    muted: true,
+    played: 0,
+    loaded: 0,
+    duration: 0,
+    loop: false,
+    autoPlay: true,
+    seeking: false,
+    downloaded: null,
+    poster: eyeknow,
+  });
 
   useEffect(() => {
     axios
@@ -52,6 +72,8 @@ function App() {
         setVideoList,
         IsLoading,
         setLoading,
+        playerState,
+        setPlayerState,
       }}
     >
       <div className="app">
