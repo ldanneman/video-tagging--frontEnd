@@ -83,13 +83,7 @@ function VideoPlayer() {
     setPlayerState({ ...playerState, urlUnloaded: download });
     console.log("9999", playerState.url);
     axios
-      .post(
-        `${BACK_PORT}/videos/download`,
-        videoList
-        // , {
-        // headers: { "Access-Control-Allow-Origin": "*" },
-        // }
-      )
+      .post(`${BACK_PORT}/videos/download`, videoList)
       .then(function (response) {
         if (response.data) {
           setPlayerState({ ...playerState, downloaded: true });
@@ -98,10 +92,6 @@ function VideoPlayer() {
           console.log("waiting...");
         }
         console.log(response.data);
-        // response.data
-        //   ? setPlayerState({ ...playerState, downloaded: true })
-        //   : console.log("waiting...");
-        // console.log(response.data);
       })
       .catch(function (error) {
         Swal.fire("Oops...", error?.response?.data, "error");
@@ -125,14 +115,14 @@ function VideoPlayer() {
   return (
     <div className={styles.playerDivWrapper}>
       <div className={styles.playerWrapper}>
-        <Button
+        {/* <Button
           className={styles.downloadButton}
           icon={<DownloadOutlined />}
           onClick={post}
           loading={IsLoading}
         >
           Download/Play Videos
-        </Button>
+        </Button> */}
         <Button onClick={onDelete}>Delete Videos</Button>
         <ReactPlayer
           className={styles.reactPlayer}
