@@ -21,12 +21,12 @@ function InteractionButtons({ player, playerState, setPlayerState }) {
   const [test, setTest] = useState(1);
 
   const nextVideo = () => {
-    setPlayerState({ ...playerState, downloaded: null, urlUnloaded: download });
+    // setPlayerState({ ...playerState, downloaded: null, urlUnloaded: download });
     if (videoList.indexOf(currentVideo) < videoList.length - 1) {
       setCurrentVideo(videoList[videoList.indexOf(currentVideo) + 1]);
-      setLoading(true);
-      setPlayerState({ ...playerState, urlUnloaded: download });
-      setTest(test + 1);
+      // setLoading(true);
+      // setPlayerState({ ...playerState, urlUnloaded: download });
+      // setTest(test + 1);
       // axios
       //   .post(`${BACK_PORT}/videos/download`, {
       //     url: videoList[videoList.indexOf(currentVideo) + 1],
@@ -48,22 +48,7 @@ function InteractionButtons({ player, playerState, setPlayerState }) {
     }
   };
 
-  useEffect(() => {
-    axios
-      .post(`${BACK_PORT}/videos/download`, currentVideo)
-      .then(function (response) {
-        if (response.data) {
-          setPlayerState({ ...playerState, downloaded: true });
-          setLoading(false);
-        } else {
-          console.log("waiting...");
-        }
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        Swal.fire("Oops...", error?.response?.data, "error");
-      });
-  }, [test]);
+  // useEffect(() => {}, [test]);
 
   const prevVideo = () => {
     if (videoList.indexOf(currentVideo) === 0) {

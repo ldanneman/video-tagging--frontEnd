@@ -57,8 +57,23 @@ function VideoPlayer() {
   };
 
   useEffect(() => {
-    // setPlayerState({ ...playerState, url: currentVideo.path });
-  }, [currentVideo, playerState]);
+    setLoading(true);
+    setPlayerState({ ...playerState, downloaded: null, urlUnloaded: download });
+    axios
+      .post(`${BACK_PORT}/videos/download`, currentVideo)
+      .then(function (response) {
+        if (response.data) {
+          setPlayerState({ ...playerState, downloaded: true });
+          setLoading(false);
+        } else {
+          console.log("waiting...");
+        }
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        Swal.fire("Oops...", error?.response?.data, "error");
+      });
+  }, [currentVideo]);
 
   console.log("rrr", playerState);
   console.log("sss", currentVideo);
