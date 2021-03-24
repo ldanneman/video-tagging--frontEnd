@@ -9,13 +9,10 @@ import React, { useState, useEffect } from "react";
 import { VideoProvider } from "./library/Context.js";
 import ReviewPage from "./pages/ReviewPage";
 import HomePage from "./pages/HomePage";
-import Test from "./pages/Test";
 import axios from "axios";
 import { BACK_PORT } from "./var";
 import Loader from "./components/Loader";
 import eyeknow from "./assets/Images/static1.squarespace.png";
-
-const LOCAL_PORT = `http://localhost:5000/api`;
 
 function App() {
   const [videoList, setVideoList] = useState(null);
@@ -44,25 +41,34 @@ function App() {
   useEffect(() => {
     axios
       .get(`${BACK_PORT}/videos`)
-      // .get(`${BACK_PORT}/videos` || `${LOCAL_PORT}/videos`)
       .then(function (response) {
-        let videos2 = response.data.map((item, index) => {
+        let lastMp4 = new RegExp(/mp4(?!.*mp4)/);
+        let fileName = encodeURI(response.data);
+        let s3Path = `${fileName.split("com/")[1].split(lastMp4)[0]}mp4`;
+
+        let videos = response.data.map((item, index) => {
           return {
             path: item,
             id: index,
-            isAggressiveInternal: null,
-            isAggrressiveExternal: null,
+            file_name: fileName,
+            s3_path: s3Path,
+            raw_file_id: null,
+            duration: null,
+            classifier_id: 0,
+            user_status: 1,
+            flag: null,
+            comments: null,
+            date: null,
           };
         });
-        setVideoList(videos2);
-        setCurrentVideo(videos2[0]);
+        setVideoList(videos);
+        setCurrentVideo(videos[0]);
       })
       .catch(function (error) {
         alert(error);
       });
   }, []);
 
-  console.log("uuu", videoList);
   return videoList && currentVideo ? (
     <VideoProvider
       value={{
@@ -82,7 +88,7 @@ function App() {
             <Route exact path="/" render={() => <Redirect to="/home" />} />
             <Route path="/home" component={HomePage} />
             <Route path="/review" component={ReviewPage} />
-            <Route path="/test" component={Test} />
+            {/* <Route path="/test" component={Test} /> */}
           </Switch>
         </Router>
       </div>

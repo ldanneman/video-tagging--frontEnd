@@ -1,4 +1,4 @@
-import React, { useContext, createRef, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import ReactPlayer from "react-player/lazy";
 import { VideoContext } from "../library/Context";
 import TestButtons from "./InteractionButtons";
@@ -7,12 +7,10 @@ import RatingBtns from "./RatingBtns.js";
 import axios from "axios";
 import { BACK_PORT } from "../var";
 import { Button } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
+// import { DownloadOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
-import download from "../assets/video/loading-overlay.mp4";
+import download from "../assets/video/Circle-Loading-Animation.mp4";
 import eyeknow from "../assets/Images/static1.squarespace.png";
-
-const LOCAL_PORT = `http://localhost:5000/api`;
 
 function VideoPlayer() {
   const {
@@ -68,35 +66,32 @@ function VideoPlayer() {
         } else {
           console.log("waiting...");
         }
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch(function (error) {
         Swal.fire("Oops...", error?.response?.data, "error");
       });
   }, [currentVideo]);
 
-  console.log("rrr", playerState);
-  console.log("sss", currentVideo);
-
-  const post = () => {
-    setLoading(true);
-    setPlayerState({ ...playerState, urlUnloaded: download });
-    console.log("9999", playerState.url);
-    axios
-      .post(`${BACK_PORT}/videos/download`, videoList)
-      .then(function (response) {
-        if (response.data) {
-          setPlayerState({ ...playerState, downloaded: true });
-          setLoading(false);
-        } else {
-          console.log("waiting...");
-        }
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        Swal.fire("Oops...", error?.response?.data, "error");
-      });
-  };
+  // const post = () => {
+  //   setLoading(true);
+  //   setPlayerState({ ...playerState, urlUnloaded: download });
+  //   console.log("9999", playerState.url);
+  //   axios
+  //     .post(`${BACK_PORT}/videos/download`, videoList)
+  //     .then(function (response) {
+  //       if (response.data) {
+  //         setPlayerState({ ...playerState, downloaded: true });
+  //         setLoading(false);
+  //       } else {
+  //         console.log("waiting...");
+  //       }
+  //       console.log(response.data);
+  //     })
+  //     .catch(function (error) {
+  //       Swal.fire("Oops...", error?.response?.data, "error");
+  //     });
+  // };
 
   const onDelete = () => {
     axios
@@ -109,9 +104,6 @@ function VideoPlayer() {
       });
   };
 
-  // const filler = "https://www.youtube.com/watch?v=RF-i1HwZlzE";
-  const filler = "assets/video/loading-overlay.mp4";
-  // console.log("thevideo", thevideo);
   return (
     <div className={styles.playerDivWrapper}>
       <div className={styles.playerWrapper}>
@@ -126,9 +118,7 @@ function VideoPlayer() {
         <Button onClick={onDelete}>Delete Videos</Button>
         <ReactPlayer
           className={styles.reactPlayer}
-          // url={playerState.url}
           url={playerState.downloaded ? thevideo : playerState.urlUnloaded}
-          // url={playerState.url}
           controls={playerState.downloaded ? true : false}
           playing={playerState.playing}
           muted={playerState.muted}
