@@ -82,6 +82,7 @@ function App() {
         setPlayerState,
       }}
     >
+      {console.log("the video List", videoList)}
       <div className="app">
         <Router>
           <Switch>

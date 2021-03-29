@@ -148,6 +148,7 @@ function VideoPlayer() {
           videoList={videoList}
           currentVideo={currentVideo}
           setVideoList={setVideoList}
+          setCurrentVideo={setCurrentVideo}
         />
       </div>
     </div>
