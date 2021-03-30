@@ -23,6 +23,8 @@ function VideoPlayer() {
     playerState,
     setPlayerState,
   } = useContext(VideoContext);
+  console.log("ggg", currentVideo.path);
+  console.log("iii", playerState.url);
 
   // const [playerState, setPlayerState] = useState({
   //   // url: currentVideo.path,
@@ -63,6 +65,7 @@ function VideoPlayer() {
         if (response.data) {
           setPlayerState({ ...playerState, downloaded: true });
           setLoading(false);
+          console.log("www", currentVideo);
         } else {
           console.log("waiting...");
         }
@@ -144,12 +147,12 @@ function VideoPlayer() {
           setLoading={setLoading}
           IsLoading={IsLoading}
         />
-        <RatingBtns
+        {/* <RatingBtns
           videoList={videoList}
           currentVideo={currentVideo}
           setVideoList={setVideoList}
           setCurrentVideo={setCurrentVideo}
-        />
+        /> */}
       </div>
     </div>
   );

@@ -42,11 +42,10 @@ function App() {
     axios
       .get(`${BACK_PORT}/videos`)
       .then(function (response) {
-        let lastMp4 = new RegExp(/mp4(?!.*mp4)/);
-        let fileName = encodeURI(response.data);
-        let s3Path = `${fileName.split("com/")[1].split(lastMp4)[0]}mp4`;
-
         let videos = response.data.map((item, index) => {
+          let lastMp4 = new RegExp(/mp4(?!.*mp4)/);
+          let fileName = encodeURI(response.data[index]);
+          let s3Path = `${fileName.split("com/")[1].split(lastMp4)[0]}mp4`;
           return {
             path: item,
             id: index,

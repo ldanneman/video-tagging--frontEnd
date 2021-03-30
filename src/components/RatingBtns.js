@@ -1,19 +1,25 @@
 // components for Tagging options Not-aggressive (default - auto-selected) & Aggressive
 // API details can be found here https://ant.design/components/button/#API
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import { Button } from "antd";
 import styles from "../styles/ratingBtns.module.css";
 import axios from "axios";
 import { BACK_PORT } from "../var";
 import Swal from "sweetalert2";
+import { VideoContext } from "../library/Context";
 
-const RatingBtns = ({
-  setVideoList,
-  videoList,
-  currentVideo,
-  setCurrentVideo,
-}) => {
+const RatingBtns = () => {
+  const {
+    currentVideo,
+    setCurrentVideo,
+    setVideoList,
+    videoList,
+    IsLoading,
+    setLoading,
+    playerState,
+    setPlayerState,
+  } = useContext(VideoContext);
   const aggressive = () => {
     setVideoList([
       ...videoList,
@@ -29,16 +35,24 @@ const RatingBtns = ({
     ]);
   };
 
+  const isMounted = useRef(false);
   useEffect(() => {
-    axios
-      .post(`${BACK_PORT}/videos/tag`, currentVideo)
-      .then(function (response) {
-        // console.log(response.data);
-      })
-      .catch(function (error) {
-        Swal.fire("Oops...", error?.response?.data, "error");
-      });
+    if (isMounted.current) {
+      axios
+        .post(`${BACK_PORT}/videos/tag`, currentVideo)
+        .then(function (response) {
+          console.log("good response", response?.data);
+        })
+        .catch(function (error) {
+          console.log("bad response", error?.response?.data);
+          Swal.fire("Oops...", error?.response?.data, "error");
+        });
+    } else {
+      isMounted.current = true;
+    }
   }, [videoList]);
+
+  // useEffect(() => {}, [currentVideo]);
 
   return (
     <div className={styles.ratingBtnsWrapper}>

@@ -3,16 +3,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../styles/InteractionBtns.module.css";
 import { VideoContext } from "../library/Context";
 import { Button } from "antd";
+import RatingBtns from "./RatingBtns.js";
 
-function InteractionButtons({ player, playerState, setPlayerState }) {
-  const { currentVideo, setCurrentVideo, videoList } = useContext(VideoContext);
+function InteractionButtons() {
+  const {
+    currentVideo,
+    setCurrentVideo,
+    videoList,
+    player,
+    playerState,
+    setPlayerState,
+  } = useContext(VideoContext);
 
   const nextVideo = () => {
     if (videoList.indexOf(currentVideo) < videoList.length - 1) {
       setCurrentVideo(videoList[videoList.indexOf(currentVideo) + 1]);
+      console.log("hellllllooooo", currentVideo.s3_path);
     } else {
       alert("This is the last video");
     }
+    console.log("uuuuu", currentVideo.s3_path);
   };
 
   const prevVideo = () => {
@@ -84,6 +94,7 @@ function InteractionButtons({ player, playerState, setPlayerState }) {
             />
           </Button>
         </div>
+        <RatingBtns />
       </div>
     )
   );
