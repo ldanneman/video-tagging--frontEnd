@@ -1,11 +1,13 @@
 {
   "name": "eyeknow-videostream-react-js",
-  "version": "0.1.0",
+  "version": "0.0.3",
   "private": true,
   "engines": {
     "npm": "7.6.3",
     "node": "14.16.0"
   },
+  "author": "Lev Danneman <Levdanneman@gmail.com> (https://ldanneman.github.io/)",
+  "license": "UNLICENSED",
   "dependencies": {
     "@ant-design/icons": "^4.5.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -44,7 +46,8 @@
     "heroku": "git add . && git commit -m",
     "postheroku": "git push heroku --all",
     "gitall": "git add . && git commit -m",
-    "postgitall": "git push origin --all && git push heroku --all"
+    "postgitall": "git push origin --all && git push heroku --all",
+    "tag": "bash ./Scripts/tag.sh"
   },
   "eslintConfig": {
     "extends": [
