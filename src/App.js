@@ -6,18 +6,23 @@ import {
 } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
-import { VideoProvider } from "./library/Context.js";
+import { VideoProvider } from "./library/Context";
 import ReviewPage from "./pages/ReviewPage";
 import HomePage from "./pages/HomePage";
+import err404 from "./pages/err404";
+import Admin from "./pages/Admin";
 import axios from "axios";
 import { BACK_PORT } from "./var";
 import Loader from "./components/Loader";
 import eyeknow from "./assets/Images/static1.squarespace.png";
+import { useHistory } from "react-router-dom";
 
 function App() {
+  let history = useHistory();
   const [videoList, setVideoList] = useState(null);
   const [IsLoading, setLoading] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(null);
+  const [token, setToken] = useState(null);
 
   const [playerState, setPlayerState] = useState({
     // url: currentVideo.path,
@@ -79,6 +84,9 @@ function App() {
         setLoading,
         playerState,
         setPlayerState,
+        token,
+        setToken,
+        history,
       }}
     >
       {console.log("the video List", videoList)}
@@ -88,6 +96,9 @@ function App() {
             <Route exact path="/" render={() => <Redirect to="/home" />} />
             <Route path="/home" component={HomePage} />
             <Route path="/review" component={ReviewPage} />
+            <Route path="/Admin" component={Admin} />
+            {/* <Route path="/serverdown" component={ServerDown} /> */}
+            <Route component={err404} />
             {/* <Route path="/test" component={Test} /> */}
           </Switch>
         </Router>

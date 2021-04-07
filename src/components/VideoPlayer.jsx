@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ReactPlayer from "react-player/lazy";
 import { VideoContext } from "../library/Context";
 import TestButtons from "./InteractionButtons";
 import styles from "../styles/VideoPlayer.module.css";
-import RatingBtns from "./RatingBtns.js";
+import RatingBtns from "./RatingBtns";
 import axios from "axios";
 import { BACK_PORT } from "../var";
 import { Button } from "antd";
@@ -11,8 +11,10 @@ import { Button } from "antd";
 import Swal from "sweetalert2";
 import download from "../assets/video/Circle-Loading-Animation.mp4";
 import eyeknow from "../assets/Images/static1.squarespace.png";
+import { useHistory } from "react-router-dom";
 
 function VideoPlayer() {
+  let history = useHistory();
   const {
     currentVideo,
     setCurrentVideo,
@@ -23,8 +25,9 @@ function VideoPlayer() {
     playerState,
     setPlayerState,
   } = useContext(VideoContext);
-  console.log("ggg", currentVideo.path);
-  console.log("iii", playerState.url);
+  const [check, setCheck] = useState(null);
+
+  const token = localStorage.getItem("auth-token");
 
   // const [playerState, setPlayerState] = useState({
   //   // url: currentVideo.path,
@@ -60,19 +63,22 @@ function VideoPlayer() {
     setLoading(true);
     setPlayerState({ ...playerState, downloaded: null, urlUnloaded: download });
     axios
-      .post(`${BACK_PORT}/videos/download`, currentVideo)
+      .post(`${BACK_PORT}/videos/download`, currentVideo, {
+        headers: { "auth-token": token },
+      })
       .then(function (response) {
         if (response.data) {
           setPlayerState({ ...playerState, downloaded: true });
           setLoading(false);
-          console.log("www", currentVideo);
+          setCheck(response?.status);
         } else {
           console.log("waiting...");
         }
         // console.log(response.data);
       })
       .catch(function (error) {
-        Swal.fire("Oops...", error?.response?.data, "error");
+        // Swal.fire("Oops...", error?.response?.data, "error");
+        setCheck(error?.response?.status || "theError");
       });
   }, [currentVideo]);
 
@@ -107,10 +113,11 @@ function VideoPlayer() {
       });
   };
 
-  return (
-    <div className={styles.playerDivWrapper}>
-      <div className={styles.playerWrapper}>
-        {/* <Button
+  if (check) {
+    return check == 200 ? (
+      <div className={styles.playerDivWrapper}>
+        <div className={styles.playerWrapper}>
+          {/* <Button
           className={styles.downloadButton}
           icon={<DownloadOutlined />}
           onClick={post}
@@ -118,44 +125,49 @@ function VideoPlayer() {
         >
           Download/Play Videos
         </Button> */}
-        <Button onClick={onDelete}>Delete Videos</Button>
-        <ReactPlayer
-          className={styles.reactPlayer}
-          url={playerState.downloaded ? thevideo : playerState.urlUnloaded}
-          controls={playerState.downloaded ? true : false}
-          playing={playerState.playing}
-          muted={playerState.muted}
-          autoPlay={playerState.autoPlay}
-          loop={playerState.downloaded ? false : true}
-          config={{
-            file: {
-              attributes: {
-                poster: playerState.poster,
+          <Button onClick={onDelete}>Delete Videos</Button>
+          <ReactPlayer
+            className={styles.reactPlayer}
+            url={playerState.downloaded ? thevideo : playerState.urlUnloaded}
+            controls={playerState.downloaded ? true : false}
+            playing={playerState.playing}
+            muted={playerState.muted}
+            autoPlay={playerState.autoPlay}
+            loop={playerState.downloaded ? false : true}
+            config={{
+              file: {
+                attributes: {
+                  poster: playerState.poster,
+                },
               },
-            },
-          }}
-        />
-        <div>{getCurrentVideoIndex()}</div>
+            }}
+          />
+          <div>{getCurrentVideoIndex()}</div>
 
-        <TestButtons
-          playerState={playerState}
-          currentVideo={currentVideo}
-          videoList={videoList}
-          setCurrentVideo={setCurrentVideo}
-          setVideoList={setVideoList}
-          setPlayerState={setPlayerState}
-          setLoading={setLoading}
-          IsLoading={IsLoading}
-        />
-        {/* <RatingBtns
+          <TestButtons
+            playerState={playerState}
+            currentVideo={currentVideo}
+            videoList={videoList}
+            setCurrentVideo={setCurrentVideo}
+            setVideoList={setVideoList}
+            setPlayerState={setPlayerState}
+            setLoading={setLoading}
+            IsLoading={IsLoading}
+          />
+          {/* <RatingBtns
           videoList={videoList}
           currentVideo={currentVideo}
           setVideoList={setVideoList}
           setCurrentVideo={setCurrentVideo}
         /> */}
+        </div>
       </div>
-    </div>
-  );
+    ) : (
+      <div>{history.push("/err404")}</div>
+    );
+  } else {
+    return <div>{null}</div>;
+  }
 }
 
 export default VideoPlayer;

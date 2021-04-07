@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../styles/InteractionBtns.module.css";
 import { VideoContext } from "../library/Context";
 import { Button } from "antd";
-import RatingBtns from "./RatingBtns.js";
+import RatingBtns from "./RatingBtns";
 
 function InteractionButtons() {
   const {
