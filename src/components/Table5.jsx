@@ -60,7 +60,7 @@ function Table5() {
         />
       ),
     },
-    { title: "ID", field: "_id", hidden: false },
+    { title: "ID", field: "_id", hidden: true },
     { title: "Name", field: "name" },
     { title: "Email", field: "email" },
     { title: "Company", field: "companyID" },
