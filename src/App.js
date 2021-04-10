@@ -10,6 +10,8 @@ import { VideoProvider } from "./library/Context";
 import ReviewPage from "./pages/ReviewPage";
 import HomePage from "./pages/HomePage";
 import err404 from "./pages/err404";
+import err500 from "./pages/err500";
+import EyeKnowLanding from "./pages/EyeKnowLanding";
 import Admin from "./pages/Admin";
 import axios from "axios";
 import { BACK_PORT } from "./var";
@@ -23,6 +25,7 @@ function App() {
   const [IsLoading, setLoading] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(null);
   const [token, setToken] = useState(null);
+  const [error, setError] = useState(null);
 
   const [playerState, setPlayerState] = useState({
     // url: currentVideo.path,
@@ -47,29 +50,33 @@ function App() {
     axios
       .get(`${BACK_PORT}/videos`)
       .then(function (response) {
-        let videos = response.data.map((item, index) => {
-          let lastMp4 = new RegExp(/mp4(?!.*mp4)/);
-          let fileName = encodeURI(response.data[index]);
-          let s3Path = `${fileName.split("com/")[1].split(lastMp4)[0]}mp4`;
-          return {
-            path: item,
-            id: index,
-            file_name: fileName,
-            s3_path: s3Path,
-            raw_file_id: null,
-            duration: null,
-            classifier_id: 0,
-            user_status: 1,
-            flag: null,
-            comments: null,
-            date: null,
-          };
-        });
-        setVideoList(videos);
-        setCurrentVideo(videos[0]);
+        if (response.data.length == 0) {
+          setError("theError");
+        } else {
+          let videos = response.data.map((item, index) => {
+            let lastMp4 = new RegExp(/mp4(?!.*mp4)/);
+            let fileName = encodeURI(response.data[index]);
+            let s3Path = `${fileName.split("com/")[1].split(lastMp4)[0]}mp4`;
+            return {
+              path: item,
+              id: index,
+              file_name: fileName,
+              s3_path: s3Path,
+              raw_file_id: null,
+              duration: null,
+              classifier_id: 0,
+              user_status: 1,
+              flag: null,
+              comments: null,
+              date: null,
+            };
+          });
+          setVideoList(videos);
+          setCurrentVideo(videos[0]);
+        }
       })
       .catch(function (error) {
-        alert(error);
+        setError(error?.response?.data ?? "the error");
       });
   }, []);
 
@@ -89,7 +96,6 @@ function App() {
         history,
       }}
     >
-      {console.log("the video List", videoList)}
       <div className="app">
         <Router>
           <Switch>
@@ -97,7 +103,8 @@ function App() {
             <Route path="/home" component={HomePage} />
             <Route path="/review" component={ReviewPage} />
             <Route path="/Admin" component={Admin} />
-            {/* <Route path="/serverdown" component={ServerDown} /> */}
+            <Route path="/ekl" component={EyeKnowLanding} />
+            <Route path="/serverdown" component={err500} />
             <Route component={err404} />
             {/* <Route path="/test" component={Test} /> */}
           </Switch>
@@ -105,7 +112,22 @@ function App() {
       </div>
     </VideoProvider>
   ) : (
-    <Loader />
+    <>
+      {!error ? <Loader /> : <div>{null}</div>}
+
+      <Router>
+        <Switch>
+          {error ? (
+            <Route path="/" component={err500} />
+          ) : (
+            <>
+              <Route path="/" component={EyeKnowLanding} />
+              <Route component={err404} />
+            </>
+          )}
+        </Switch>
+      </Router>
+    </>
   );
 }
 

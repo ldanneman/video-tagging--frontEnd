@@ -125,7 +125,7 @@ function VideoPlayer() {
         >
           Download/Play Videos
         </Button> */}
-          <Button onClick={onDelete}>Delete Videos</Button>
+          {/* <Button onClick={onDelete}>Delete Videos</Button> */}
           <ReactPlayer
             className={styles.reactPlayer}
             url={playerState.downloaded ? thevideo : playerState.urlUnloaded}
