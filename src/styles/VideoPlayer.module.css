@@ -1,14 +1,7 @@
 .playerDivWrapper {
-  /* border: 5px solid green; */
   min-height: 100vh;
   text-align: center;
-  /* text-align: center;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around; */
-  /* border: 2px solid green; */
+  background-color: navy;
 }
 
 .ratingTitleWrapper {
@@ -22,31 +15,20 @@
 }
 
 .playerWrapper {
-  /* margin-top: 0.5rem; */
-  /* border: 2px solid yellow; */
   display: inline-block;
   padding: 2rem;
-  background-color: orange;
+  background-color: black;
   border-radius: 1rem;
-  /* margin: 0 auto; */
-  /* position: relative; */
-  /* padding-top: 56.25%; */
-  /* display: flex;
-  justify-content: center; */
-  /* border: 2px solid blue; */
+  text-align: center;
 }
 
 .reactPlayer {
-  /* position: absolute; */
-  /* top: 0;
-  left: 0; */
 }
 
 .reactPlayer > video {
   border: 10px solid white;
   border-radius: 1rem;
   background-color: black;
-  /* border-style: ridge; */
 }
 
 video:focus {
