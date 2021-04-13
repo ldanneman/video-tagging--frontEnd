@@ -5,10 +5,11 @@ import Table2 from "../components/Table2";
 import Table3 from "../components/Table3";
 import Table4 from "../components/Table4";
 import Table5 from "../components/Table5";
+import styles from "../styles/Admin.moduel.css";
 
 const Admin = () => {
   return (
-    <div>
+    <div className={styles.background}>
       {/* <Table1 /> */}
       {/* <Table2 /> */}
       {/* <Table3 /> */}
