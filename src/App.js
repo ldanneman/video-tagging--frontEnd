@@ -13,6 +13,7 @@ import err404 from "./pages/err404";
 import err500 from "./pages/err500";
 import EyeKnowLanding from "./pages/EyeKnowLanding";
 import Admin from "./pages/Admin";
+import SignedIn from "./pages/SignedIn";
 import axios from "axios";
 import { BACK_PORT } from "./var";
 import Loader from "./components/Loader";
@@ -20,11 +21,11 @@ import eyeknow from "./assets/Images/static1.squarespace.png";
 import { useHistory } from "react-router-dom";
 
 function App() {
+  const token = localStorage.getItem("user-info");
   let history = useHistory();
   const [videoList, setVideoList] = useState(null);
   const [IsLoading, setLoading] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(null);
-  const [token, setToken] = useState(null);
   const [error, setError] = useState(null);
 
   const [playerState, setPlayerState] = useState({
@@ -48,7 +49,9 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(`${BACK_PORT}/videos`)
+      .get(`${BACK_PORT}/videos`, {
+        headers: { "user-info": token },
+      })
       .then(function (response) {
         if (response.data.length == 0) {
           setError("theError");
@@ -91,9 +94,6 @@ function App() {
         setLoading,
         playerState,
         setPlayerState,
-        token,
-        setToken,
-        history,
       }}
     >
       <div className="app">
@@ -101,6 +101,7 @@ function App() {
           <Switch>
             <Route exact path="/" render={() => <Redirect to="/home" />} />
             <Route path="/home" component={HomePage} />
+            <Route path="/SignedIn" component={SignedIn} />
             <Route path="/review" component={ReviewPage} />
             <Route path="/Admin" component={Admin} />
             <Route path="/ekl" component={EyeKnowLanding} />
