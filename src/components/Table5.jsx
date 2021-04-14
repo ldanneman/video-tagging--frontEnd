@@ -90,13 +90,13 @@ function Table5() {
       field: "facilities",
       editComponent: ({ value, onChange }) => (
         <Select onChange={(e) => onChange(e.target.value)}>
-          <option selected value={value}>
+          <option multiple selected value={value}>
             {value}
           </option>
           {entities
             .filter((item) => item != value)
             .map((item) => (
-              <option key={item} value={item}>
+              <option multiple key={item} value={item}>
                 {item}
               </option>
             ))}
