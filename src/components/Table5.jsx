@@ -4,6 +4,15 @@ import Alert from "@material-ui/lab/Alert";
 import Grid from "@material-ui/core/Grid";
 import { forwardRef } from "react";
 import { BACK_PORT } from "../var";
+import {
+  Select,
+  Checkbox,
+  MenuItem,
+  FormControl,
+  Input,
+  InputLabel,
+  ListItemText,
+} from "@material-ui/core";
 
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
@@ -47,6 +56,17 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+const selectData = ["One", "Two", "Three"];
 function Table5() {
   const columns = [
     {
@@ -65,15 +85,79 @@ function Table5() {
     { title: "Email", field: "email" },
     { title: "Company", field: "companyID" },
     { title: "Role", field: "role" },
+    {
+      title: "Entity",
+      field: "facilities",
+      editComponent: ({ value, onChange }) => (
+        <Select onChange={(e) => onChange(e.target.value)}>
+          <option selected value={value}>
+            {value}
+          </option>
+          {entities
+            .filter((item) => item != value)
+            .map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+        </Select>
+      ),
+    },
+    // {
+    //   title: "Facility2",
+    //   render: (rowData) => (
+    //     <FormControl>
+    //       <InputLabel id="demo-mutiple-checkbox-label">Tags</InputLabel>
+    //       <Select
+    //         labelId="demo-mutiple-checkbox-label"
+    //         id="demo-mutiple-checkbox"
+    //         multiple
+    //         value={items}
+    //         onChange={handleChange}
+    //         input={<Input />}
+    //         renderValue={(selected) => selected.join(", ")}
+    //         MenuProps={MenuProps}
+    //       >
+    //         {selectData.map((item) => (
+    //           <MenuItem key={item} value={item}>
+    //             <Checkbox checked={items.indexOf(item) > -1} />
+    //             <ListItemText primary={item} />
+    //           </MenuItem>
+    //         ))}
+    //       </Select>
+    //     </FormControl>
+    //   ),
+    // },
+    // { title: "TEST", field: "facilities" },
     { title: "Password", field: "password" },
   ];
-  const [data, setData] = useState([]); //table data
+  const [data, setData] = useState([]);
+  console.log("thisis the data", data[0]?.facilities[0]);
+
+  const [items, setItems] = useState([]); //table data
+  const [entities, setEntities] = useState([]);
   //for error handling
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
   let errorList = [];
+
+  const handleChange = (event) => {
+    setItems(event.target.value);
+  };
+
+  const handleChangeMultiple = (event) => {
+    const { options } = event.target;
+    const value = [];
+    for (let i = 0, l = options.length; i < l; i += 1) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    setItems(value);
+  };
   const handleRowAdd = (newData, resolve) => {
     console.log("RowADD", newData);
+
     //validation
 
     // if (newData.first_name === undefined) {
@@ -159,16 +243,32 @@ function Table5() {
 
   useEffect(() => {
     axios
-      .get(`${BACK_PORT}/data/users`)
-      // .get("https://reqres.in/api/users")
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data);
-      })
+      .all([
+        axios.get(`${BACK_PORT}/data/users`),
+        axios.get(`${BACK_PORT}/videos/testing`),
+      ])
+      .then(
+        axios.spread((usersRes, entitiesRes) => {
+          setData(usersRes.data);
+          setEntities(entitiesRes.data);
+        })
+      )
       .catch((error) => {
         setErrorMessages(["Cannot load user data"]);
         setIserror(true);
       });
+    // axios
+    //   .get(`${BACK_PORT}/data/users`)
+    //   // .get("https://reqres.in/api/users")
+    //   .then((res) => {
+    //     let nres = { ...res.data, facilities: "hello" };
+    //     console.log(res.data);
+    //     setData(res.data);
+    //   })
+    //   .catch((error) => {
+    //     setErrorMessages(["Cannot load user data"]);
+    //     setIserror(true);
+    //   });
   }, []);
   return (
     <div>
@@ -182,6 +282,19 @@ function Table5() {
             new Promise((resolve) => {
               handleRowUpdate(newData, oldData, resolve);
             }),
+          // onRowUpdate: (newData, oldData) =>
+          //   new Promise((resolve, reject) => {
+          //     setTimeout(() => {
+          //       console.log("old:", oldData);
+          //       console.log("new:", newData);
+          //       const dataUpdate = [...data];
+          //       const index = oldData.tableData.id;
+          //       dataUpdate[index] = newData;
+          //       setData([...dataUpdate]);
+
+          //       resolve();
+          //     }, 1000);
+          //   }),
           onRowAdd: (newData) =>
             new Promise((resolve) => {
               handleRowAdd(newData, resolve);
@@ -191,6 +304,38 @@ function Table5() {
               handleRowDelete(oldData, resolve);
             }),
         }}
+        // components={{
+        //   Action: (props) => (
+        //     <div
+        //     // style={{
+        //     //   marginBottom: "5rem",
+        //     //   marginTop: "1rem",
+        //     //   width: "150px",
+        //     // }}
+        //     >
+        //       <FormControl>
+        //         <InputLabel id="demo-mutiple-checkbox-label">Tags</InputLabel>
+        //         <Select
+        //           labelId="demo-mutiple-checkbox-label"
+        //           id="demo-mutiple-checkbox"
+        //           multiple
+        //           value={items}
+        //           onChange={handleChange}
+        //           input={<Input />}
+        //           renderValue={(selected) => selected.join(", ")}
+        //           MenuProps={MenuProps}
+        //         >
+        //           {selectData.map((item) => (
+        //             <MenuItem key={item} value={item}>
+        //               <Checkbox checked={items.indexOf(item) > -1} />
+        //               <ListItemText primary={item} />
+        //             </MenuItem>
+        //           ))}
+        //         </Select>
+        //       </FormControl>
+        //     </div>
+        //   ),
+        // }}
       />
     </div>
   );
