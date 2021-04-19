@@ -2,9 +2,6 @@ import React from "react";
 // import background from "../assets/video/preschool.mp4";
 import styles from "../styles/HomePageStyle.module.css";
 import { Link } from "react-router-dom";
-import SignUp from "../components/Auth/SignUp";
-import LogIn from "../components/Auth/LogIn";
-import SignInModal from "../components/Auth/SignInModal";
 
 const HomePage = () => {
   const background =
@@ -16,9 +13,7 @@ const HomePage = () => {
       </video>
 
       <div className={styles.Content}>
-        <div className={styles.innerContent}>
-          <SignInModal />
-        </div>
+        <div className={styles.innerContent}></div>
         <div className={styles.SubContent}>
           <h1>EyeKnow</h1>
           <p>

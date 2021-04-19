@@ -90,21 +90,13 @@ function Table5() {
       field: "facilities",
       editComponent: ({ value, onChange }) => (
         <Select onChange={(e) => onChange(e.target.value)}>
-<<<<<<< HEAD
           <option selected value={value}>
-=======
-          <option multiple selected value={value}>
->>>>>>> filesystem
             {value}
           </option>
           {entities
             .filter((item) => item != value)
             .map((item) => (
-<<<<<<< HEAD
               <option key={item} value={item}>
-=======
-              <option multiple key={item} value={item}>
->>>>>>> filesystem
                 {item}
               </option>
             ))}
