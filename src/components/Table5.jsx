@@ -68,6 +68,8 @@ const MenuProps = {
 };
 const selectData = ["One", "Two", "Three"];
 function Table5() {
+  const token = localStorage.getItem("auth-token");
+
   const columns = [
     {
       title: "Avatar",
@@ -132,7 +134,7 @@ function Table5() {
     { title: "Password", field: "password" },
   ];
   const [data, setData] = useState([]);
-  console.log("thisis the data", data[0]?.facilities[0]);
+  // console.log("thisis the data", data[0]?.facilities[0]);
 
   const [items, setItems] = useState([]); //table data
   const [entities, setEntities] = useState([]);
@@ -172,7 +174,9 @@ function Table5() {
     if (errorList.length < 1) {
       //no error
       axios
-        .post(`${BACK_PORT}/user/register`, newData)
+        .post(`${BACK_PORT}/user/register`, newData, {
+          headers: { "auth-token": token },
+        })
         .then((res) => {
           console.log("addResponse", res);
           let dataToAdd = [...data];
@@ -183,7 +187,7 @@ function Table5() {
           setIserror(false);
         })
         .catch((error) => {
-          console.log("addBadRes", error);
+          alert(error?.response?.data);
           setErrorMessages(["Cannot add data. Server error!"]);
           setIserror(true);
           resolve();
@@ -197,7 +201,9 @@ function Table5() {
   const handleRowUpdate = (newData, oldData, resolve) => {
     if (errorList.length < 1) {
       axios
-        .post(`${BACK_PORT}/data/updateuser`, newData)
+        .post(`${BACK_PORT}/data/updateuser`, newData, {
+          headers: { "auth-token": token },
+        })
         // .patch("https://reqres.in/api/users/" + newData.id, newData)
         .then((res) => {
           console.log("newData", newData);
@@ -225,7 +231,9 @@ function Table5() {
   const handleRowDelete = (oldData, resolve) => {
     console.log("oldData", oldData);
     axios
-      .post(`${BACK_PORT}/data/delete-user`, oldData)
+      .post(`${BACK_PORT}/data/delete-user`, oldData, {
+        headers: { "auth-token": token },
+      })
       .then((res) => {
         console.log(res);
         const dataDelete = [...data];
@@ -244,7 +252,9 @@ function Table5() {
   useEffect(() => {
     axios
       .all([
-        axios.get(`${BACK_PORT}/data/users`),
+        axios.get(`${BACK_PORT}/data/users`, {
+          headers: { "auth-token": token },
+        }),
         axios.get(`${BACK_PORT}/videos/testing`),
       ])
       .then(
@@ -254,21 +264,10 @@ function Table5() {
         })
       )
       .catch((error) => {
+        console.log("CALL ERROR", error);
         setErrorMessages(["Cannot load user data"]);
         setIserror(true);
       });
-    // axios
-    //   .get(`${BACK_PORT}/data/users`)
-    //   // .get("https://reqres.in/api/users")
-    //   .then((res) => {
-    //     let nres = { ...res.data, facilities: "hello" };
-    //     console.log(res.data);
-    //     setData(res.data);
-    //   })
-    //   .catch((error) => {
-    //     setErrorMessages(["Cannot load user data"]);
-    //     setIserror(true);
-    //   });
   }, []);
   return (
     <div>
@@ -282,19 +281,6 @@ function Table5() {
             new Promise((resolve) => {
               handleRowUpdate(newData, oldData, resolve);
             }),
-          // onRowUpdate: (newData, oldData) =>
-          //   new Promise((resolve, reject) => {
-          //     setTimeout(() => {
-          //       console.log("old:", oldData);
-          //       console.log("new:", newData);
-          //       const dataUpdate = [...data];
-          //       const index = oldData.tableData.id;
-          //       dataUpdate[index] = newData;
-          //       setData([...dataUpdate]);
-
-          //       resolve();
-          //     }, 1000);
-          //   }),
           onRowAdd: (newData) =>
             new Promise((resolve) => {
               handleRowAdd(newData, resolve);

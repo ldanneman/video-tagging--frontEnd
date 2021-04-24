@@ -11,6 +11,9 @@ const clear = () => {
 function Nav() {
   const { Header } = Layout;
   const token = localStorage.getItem("auth-token");
+  const userInfo = localStorage.getItem("user-info")?.split(",");
+  console.log("the token", token);
+  console.log("user INFO", userInfo);
 
   return (
     <>
@@ -23,17 +26,26 @@ function Nav() {
                 Home
               </Link>
             </Menu.Item>
-            <Menu.Item key="2">
-              <Link className="link" to="review">
-                Review
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Link className="link" to="/admin">
-                Admin
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="4">
+            {token && (
+              <Menu.Item key="2">
+                <Link className="link" to="review">
+                  Review
+                </Link>
+              </Menu.Item>
+            )}
+            {userInfo && userInfo[3] == 1 && (
+              <Menu.Item key="3">
+                <Link className="link" to="/admin">
+                  Admin
+                </Link>
+              </Menu.Item>
+            )}
+            {userInfo && (
+              <Menu.Item key="4">
+                {userInfo[1]}
+              </Menu.Item>
+            )}
+            <Menu.Item key="5">
               {!token ? (
                 <SignInModal />
               ) : (

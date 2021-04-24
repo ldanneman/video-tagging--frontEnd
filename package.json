@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "npm": "7.6.3",
-    "node": "14.16.0"
+    "yarn": "1.22.5"
   },
   "author": "Lev Danneman <Levdanneman@gmail.com> (https://ldanneman.github.io/)",
   "license": "UNLICENSED",

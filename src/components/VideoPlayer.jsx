@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import download from "../assets/video/Circle-Loading-Animation.mp4";
 import eyeknow from "../assets/Images/static1.squarespace.png";
 import { useHistory } from "react-router-dom";
+import Loader from "./Loader";
 
 function VideoPlayer() {
   let history = useHistory();
@@ -29,24 +30,6 @@ function VideoPlayer() {
 
   const token = localStorage.getItem("auth-token");
 
-  // const [playerState, setPlayerState] = useState({
-  //   // url: currentVideo.path,
-  //   url: currentVideo.path,
-  //   urlUnloaded: "nothing.mp4",
-  //   pip: false,
-  //   playing: true,
-  //   controls: true,
-  //   light: false,
-  //   muted: true,
-  //   played: 0,
-  //   loaded: 0,
-  //   duration: 0,
-  //   loop: false,
-  //   autoPlay: true,
-  //   seeking: false,
-  //   downloaded: null,
-  //   poster: eyeknow,
-  // });
   const lastMp4 = new RegExp(/mp4(?!.*mp4)/);
   let encoded = encodeURI(currentVideo.path);
   const thevideo = `${BACK_PORT}/videos/stream?path=Assets/Videos/FV/${encoded
@@ -60,6 +43,7 @@ function VideoPlayer() {
   };
 
   useEffect(() => {
+    console.log("CURRENT VIDEO", currentVideo);
     setLoading(true);
     setPlayerState({ ...playerState, downloaded: null, urlUnloaded: download });
     axios
@@ -74,58 +58,16 @@ function VideoPlayer() {
         } else {
           console.log("waiting...");
         }
-        // console.log(response.data);
       })
       .catch(function (error) {
-        // Swal.fire("Oops...", error?.response?.data, "error");
         setCheck(error?.response?.status || "theError");
       });
   }, [currentVideo]);
-
-  // const post = () => {
-  //   setLoading(true);
-  //   setPlayerState({ ...playerState, urlUnloaded: download });
-  //   console.log("9999", playerState.url);
-  //   axios
-  //     .post(`${BACK_PORT}/videos/download`, videoList)
-  //     .then(function (response) {
-  //       if (response.data) {
-  //         setPlayerState({ ...playerState, downloaded: true });
-  //         setLoading(false);
-  //       } else {
-  //         console.log("waiting...");
-  //       }
-  //       console.log(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       Swal.fire("Oops...", error?.response?.data, "error");
-  //     });
-  // };
-
-  const onDelete = () => {
-    axios
-      .post(`${BACK_PORT}/videos/deletefv`, videoList)
-      .then(function (response) {
-        Swal.fire(response?.data);
-      })
-      .catch(function (error) {
-        Swal.fire("Oops...", error?.response?.data, "error");
-      });
-  };
 
   if (check) {
     return check == 200 ? (
       <div className={styles.playerDivWrapper}>
         <div className={styles.playerWrapper}>
-          {/* <Button
-          className={styles.downloadButton}
-          icon={<DownloadOutlined />}
-          onClick={post}
-          loading={IsLoading}
-        >
-          Download/Play Videos
-        </Button> */}
-          {/* <Button onClick={onDelete}>Delete Videos</Button> */}
           <ReactPlayer
             className={styles.reactPlayer}
             url={playerState.downloaded ? thevideo : playerState.urlUnloaded}
@@ -166,7 +108,7 @@ function VideoPlayer() {
       <div>{history.push("/err404")}</div>
     );
   } else {
-    return <div>{null}</div>;
+    return <div>{<Loader />}</div>;
   }
 }
 
