@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { Button } from "antd";
 import { BACK_PORT } from "../../var";
 import Swal from "sweetalert2";
 
@@ -9,7 +8,6 @@ function LogIn() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
   const onSubmit = (data, e) => {

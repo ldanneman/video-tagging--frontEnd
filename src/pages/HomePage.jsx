@@ -1,5 +1,4 @@
 import React from "react";
-// import background from "../assets/video/preschool.mp4";
 import styles from "../styles/HomePageStyle.module.css";
 import { Link } from "react-router-dom";
 

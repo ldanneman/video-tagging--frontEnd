@@ -1,9 +1,5 @@
 import React from "react";
 import { Modal, Button } from "antd";
-import { useForm } from "react-hook-form";
-import axios from "axios";
-import { BACK_PORT } from "../../var";
-import Swal from "sweetalert2";
 import LogIn from "./LogIn";
 
 function SignInModal() {
@@ -25,7 +21,6 @@ function SignInModal() {
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setVisible(false);
   };
   return (

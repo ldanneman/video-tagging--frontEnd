@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { Button } from "antd";
 import { BACK_PORT } from "../../var";
 import Swal from "sweetalert2";
 
@@ -13,13 +12,9 @@ function SignUp() {
     formState: { errors },
   } = useForm();
   const onSubmit = (data, e) => {
-    console.log(data);
     axios
       .post(`${BACK_PORT}/user/register`, data)
       .then(function (response) {
-        // window.location.reload();
-        console.log(response);
-        console.log(response.data);
       })
       .catch(function (error) {
         Swal.fire("Oops...", error.response.data, "error");

@@ -3,25 +3,15 @@ import { VideoContext } from "../library/Context";
 import axios from "axios";
 import { BACK_PORT } from "../var";
 import Loader from "../components/Loader";
-import eyeknow from "../assets/Images/static1.squarespace.png";
-import { useHistory } from "react-router-dom";
 
 function SignedIn() {
-  const {
-    currentVideo,
-    setCurrentVideo,
-    setVideoList,
-    videoList,
-    IsLoading,
-    setLoading,
-    playerState,
-    setPlayerState,
-  } = useContext(VideoContext);
+  const { currentVideo, setCurrentVideo, setVideoList, videoList } = useContext(
+    VideoContext
+  );
   const [error, setError] = useState(null);
 
   const token = localStorage.getItem("auth-token");
   const userInfo = localStorage.getItem("user-info").split(",");
-  console.log("User Info", userInfo);
   const params = {
     Bucket: userInfo[5],
     Prefix: userInfo[6],
@@ -30,8 +20,8 @@ function SignedIn() {
 
   useEffect(() => {
     axios
-      .post(`${BACK_PORT}/videos/get-videos`, params, {
-        headers: { "user-info": token },
+      .post(`${BACK_PORT}/data/get-videos`, params, {
+        headers: { "auth-token": token },
       })
       .then(function (response) {
         if (response.data.length == 0) {

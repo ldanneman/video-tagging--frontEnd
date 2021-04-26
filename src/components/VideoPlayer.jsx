@@ -3,14 +3,9 @@ import ReactPlayer from "react-player/lazy";
 import { VideoContext } from "../library/Context";
 import TestButtons from "./InteractionButtons";
 import styles from "../styles/VideoPlayer.module.css";
-import RatingBtns from "./RatingBtns";
 import axios from "axios";
 import { BACK_PORT } from "../var";
-import { Button } from "antd";
-// import { DownloadOutlined } from "@ant-design/icons";
-import Swal from "sweetalert2";
 import download from "../assets/video/Circle-Loading-Animation.mp4";
-import eyeknow from "../assets/Images/static1.squarespace.png";
 import { useHistory } from "react-router-dom";
 import Loader from "./Loader";
 
@@ -43,7 +38,6 @@ function VideoPlayer() {
   };
 
   useEffect(() => {
-    console.log("CURRENT VIDEO", currentVideo);
     setLoading(true);
     setPlayerState({ ...playerState, downloaded: null, urlUnloaded: download });
     axios
@@ -56,7 +50,6 @@ function VideoPlayer() {
           setLoading(false);
           setCheck(response?.status);
         } else {
-          console.log("waiting...");
         }
       })
       .catch(function (error) {

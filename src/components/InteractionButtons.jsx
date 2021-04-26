@@ -18,11 +18,9 @@ function InteractionButtons() {
   const nextVideo = () => {
     if (videoList.indexOf(currentVideo) < videoList.length - 1) {
       setCurrentVideo(videoList[videoList.indexOf(currentVideo) + 1]);
-      console.log("hellllllooooo", currentVideo.s3_path);
     } else {
       alert("This is the last video");
     }
-    console.log("uuuuu", currentVideo.s3_path);
   };
 
   const prevVideo = () => {

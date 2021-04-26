@@ -40,11 +40,8 @@ const RatingBtns = () => {
     if (isMounted.current) {
       axios
         .post(`${BACK_PORT}/videos/tag`, currentVideo)
-        .then(function (response) {
-          console.log("good response", response?.data);
-        })
+        .then(function (response) {})
         .catch(function (error) {
-          console.log("bad response", error?.response?.data);
           Swal.fire("Oops...", error?.response?.data, "error");
         });
     } else {

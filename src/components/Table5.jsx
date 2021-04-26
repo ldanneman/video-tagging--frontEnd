@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Alert from "@material-ui/lab/Alert";
-import Grid from "@material-ui/core/Grid";
 import { forwardRef } from "react";
 import { BACK_PORT } from "../var";
-import {
-  Select,
-  Checkbox,
-  MenuItem,
-  FormControl,
-  Input,
-  InputLabel,
-  ListItemText,
-} from "@material-ui/core";
-
+import { Select } from "@material-ui/core";
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -56,17 +45,6 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-const selectData = ["One", "Two", "Three"];
 function Table5() {
   const token = localStorage.getItem("auth-token");
 
@@ -105,80 +83,21 @@ function Table5() {
         </Select>
       ),
     },
-    // {
-    //   title: "Facility2",
-    //   render: (rowData) => (
-    //     <FormControl>
-    //       <InputLabel id="demo-mutiple-checkbox-label">Tags</InputLabel>
-    //       <Select
-    //         labelId="demo-mutiple-checkbox-label"
-    //         id="demo-mutiple-checkbox"
-    //         multiple
-    //         value={items}
-    //         onChange={handleChange}
-    //         input={<Input />}
-    //         renderValue={(selected) => selected.join(", ")}
-    //         MenuProps={MenuProps}
-    //       >
-    //         {selectData.map((item) => (
-    //           <MenuItem key={item} value={item}>
-    //             <Checkbox checked={items.indexOf(item) > -1} />
-    //             <ListItemText primary={item} />
-    //           </MenuItem>
-    //         ))}
-    //       </Select>
-    //     </FormControl>
-    //   ),
-    // },
-    // { title: "TEST", field: "facilities" },
     { title: "Password", field: "password" },
   ];
   const [data, setData] = useState([]);
-  // console.log("thisis the data", data[0]?.facilities[0]);
-
-  const [items, setItems] = useState([]); //table data
+  const [items, setItems] = useState([]);
   const [entities, setEntities] = useState([]);
-  //for error handling
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
   let errorList = [];
-
-  const handleChange = (event) => {
-    setItems(event.target.value);
-  };
-
-  const handleChangeMultiple = (event) => {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setItems(value);
-  };
   const handleRowAdd = (newData, resolve) => {
-    console.log("RowADD", newData);
-
-    //validation
-
-    // if (newData.first_name === undefined) {
-    //   errorList.push("Please enter first name");
-    // }
-    // if (newData.last_name === undefined) {
-    //   errorList.push("Please enter last name");
-    // }
-    // if (newData.email === undefined || validateEmail(newData.email) === false) {
-    //   errorList.push("Please enter a valid email");
-    // }
     if (errorList.length < 1) {
-      //no error
       axios
         .post(`${BACK_PORT}/user/register`, newData, {
           headers: { "auth-token": token },
         })
         .then((res) => {
-          console.log("addResponse", res);
           let dataToAdd = [...data];
           dataToAdd.push(newData);
           setData(dataToAdd);
@@ -206,8 +125,6 @@ function Table5() {
         })
         // .patch("https://reqres.in/api/users/" + newData.id, newData)
         .then((res) => {
-          console.log("newData", newData);
-          console.log("OldData", oldData);
           const dataUpdate = [...data];
           const index = oldData.tableData.id;
           dataUpdate[index] = newData;
@@ -229,13 +146,11 @@ function Table5() {
   };
 
   const handleRowDelete = (oldData, resolve) => {
-    console.log("oldData", oldData);
     axios
       .post(`${BACK_PORT}/data/delete-user`, oldData, {
         headers: { "auth-token": token },
       })
       .then((res) => {
-        console.log(res);
         const dataDelete = [...data];
         const index = oldData.tableData.id;
         dataDelete.splice(index, 1);
@@ -255,7 +170,9 @@ function Table5() {
         axios.get(`${BACK_PORT}/data/users`, {
           headers: { "auth-token": token },
         }),
-        axios.get(`${BACK_PORT}/videos/testing`),
+        axios.get(`${BACK_PORT}/data/get-entities`, {
+          headers: { "auth-token": token },
+        }),
       ])
       .then(
         axios.spread((usersRes, entitiesRes) => {
@@ -264,7 +181,6 @@ function Table5() {
         })
       )
       .catch((error) => {
-        console.log("CALL ERROR", error);
         setErrorMessages(["Cannot load user data"]);
         setIserror(true);
       });
@@ -290,38 +206,6 @@ function Table5() {
               handleRowDelete(oldData, resolve);
             }),
         }}
-        // components={{
-        //   Action: (props) => (
-        //     <div
-        //     // style={{
-        //     //   marginBottom: "5rem",
-        //     //   marginTop: "1rem",
-        //     //   width: "150px",
-        //     // }}
-        //     >
-        //       <FormControl>
-        //         <InputLabel id="demo-mutiple-checkbox-label">Tags</InputLabel>
-        //         <Select
-        //           labelId="demo-mutiple-checkbox-label"
-        //           id="demo-mutiple-checkbox"
-        //           multiple
-        //           value={items}
-        //           onChange={handleChange}
-        //           input={<Input />}
-        //           renderValue={(selected) => selected.join(", ")}
-        //           MenuProps={MenuProps}
-        //         >
-        //           {selectData.map((item) => (
-        //             <MenuItem key={item} value={item}>
-        //               <Checkbox checked={items.indexOf(item) > -1} />
-        //               <ListItemText primary={item} />
-        //             </MenuItem>
-        //           ))}
-        //         </Select>
-        //       </FormControl>
-        //     </div>
-        //   ),
-        // }}
       />
     </div>
   );

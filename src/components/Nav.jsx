@@ -12,8 +12,6 @@ function Nav() {
   const { Header } = Layout;
   const token = localStorage.getItem("auth-token");
   const userInfo = localStorage.getItem("user-info")?.split(",");
-  console.log("the token", token);
-  console.log("user INFO", userInfo);
 
   return (
     <>
