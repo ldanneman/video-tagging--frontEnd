@@ -23,6 +23,7 @@
 }
 
 .reactPlayer {
+  width: 750px !important;
 }
 
 .reactPlayer > video {
